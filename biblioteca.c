@@ -5,7 +5,7 @@ void DistribuiNotas(Aluno alunos[])
     int quantidadealunos = 5;
     for (int i = 0; i < quantidadealunos; i++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 3; j++)
         {
             alunos[i].notas[j] = (float)rand() / RAND_MAX * 10;
         }
@@ -18,11 +18,11 @@ void CalculaMedia(Aluno alunos[])
     for (int i = 0; i < quantidadealunos; i++)
     {
         float soma = 0;
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 3; j++)
         {
             soma += alunos[i].notas[j];
         }
-        alunos[i].media = soma / 5;
+        alunos[i].media = soma / 3;
     }
 }
 void OrdenarAlunos(Aluno alunos[])

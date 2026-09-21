@@ -5,6 +5,22 @@
 
 int main()
 {
+    FILE *arquivo;
+    char filename[50];
+
+    for (int i = 0; i < 11; i++){
+        for (int j = 4; j <= 4096; j *= 2 ){
+            sprintf(filename,"./entradas/alunos_%d.csv", j);
+
+            arquivo = fopen("filename", "r");
+
+            if (arquivo != NULL){
+
+                fclose(arquivo);
+            }
+        }
+    }   
+    
     Aluno alunos[5];
     strcpy(alunos[0].nome, "Joao");
     strcpy(alunos[1].nome, "Francine");
