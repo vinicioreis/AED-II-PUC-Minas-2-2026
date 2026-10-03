@@ -1,50 +1,68 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
-#include "bibilioteca.h"
+#include "biblioteca.h"
 
 int main()
 {
+    Aluno *alunos;
     FILE *arquivo;
     char filename[50];
 
-    for (int i = 0; i < 11; i++){
-        for (int j = 4; j <= 4096; j *= 2 ){
-            sprintf(filename,"./entradas/alunos_%d.csv", j);
+    for (int i = 0; i < 5; i++) // repetir as 5x
+    {
+        sprintf(filename, "./entradas/alunos_%d.csv", j);
 
-            arquivo = fopen("filename", "r");
+        for (int j = 4; j <= 4096; j *= 2)
+        {
 
-            if (arquivo != NULL){
+            sprintf(filename, "./entradas/alunos_%d.csv", j); // ele não lê arquivo nenhum. Ele monta um texto e guarda na variável filename, trocando o %d pelo valor atual de j
+
+            arquivo = fopen(filename, "r");
+
+            if (arquivo != NULL)
+            {
+                char linha[256];
+                int n = 0;
+
+                while (fgets(linha, sizeof(linha), arquivo) != NULL)
+                {
+                    n++;
+                }
+
+                rewind(arquivo);
+
+                alunos = malloc(n * sizeof(Aluno));
+
+                if (alunos == NULL)
+                {
+                    printf("Erro ao alocar memoria.\n");
+                    fclose(arquivo);
+                    return 1;
+                }
+
+                int quantidade = 0;
+
+                while (fscanf(arquivo, "%49[^,],%f,%f,%f\n",
+                              alunos[quantidade].nome,
+                              &alunos[quantidade].notas[0],
+                              &alunos[quantidade].notas[1],
+                              &alunos[quantidade].notas[2]) == 4)
+                {
+
+                    quantidade++;
+                }
+
+                printf("Arquivo: %s  | Alunos lidos: %d\n",
+                       filename, n, quantidade);
 
                 fclose(arquivo);
+                free(alunos);
+            }
+            else
+            {
+                printf("nao abriu : %s\n", filename);
             }
         }
-    }   
-    
-    Aluno alunos[5];
-    strcpy(alunos[0].nome, "Joao");
-    strcpy(alunos[1].nome, "Francine");
-    strcpy(alunos[2].nome, "Pedro");
-    strcpy(alunos[3].nome, "Jose");
-    strcpy(alunos[4].nome, "Carlos");
-
-    OrdenarAlunos(alunos);
-
-    printf("\nAlunos ordenados por nome (crescente):\n");
-    for (int i = 0; i < 5; i++)
-    {
-        printf("Nome: %s\n", alunos[i].nome);
     }
-
-    DistribuiNotas(alunos);
-    CalculaMedia(alunos);
-    OrdenaAlunosDec(alunos);
-
-    printf("\nAlunos ordenados por media (decrescente):\n");
-    for (int i = 0; i < 5; i++)
-    {
-        printf("Nome: %s | Media: %.2f\n", alunos[i].nome, alunos[i].media);
-    }
-
     return 0;
 }
